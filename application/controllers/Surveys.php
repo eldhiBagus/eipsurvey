@@ -29,6 +29,7 @@ class Surveys extends CI_Controller
         $this->load->view('umum/u_footer');
     }
 
+
     public function list()
     {
         echo json_encode($this->Survey_model->get_all());
@@ -122,12 +123,15 @@ class Surveys extends CI_Controller
         $questions = $this->db
             ->select('*')
             ->where('survey_id', $survey_id)
-            ->order_by('id', 'ASC')
+            ->order_by('position', 'ASC')
             ->get('questions')
             ->result();
 
         // Jika tidak ada pertanyaan, fallback ke header default
-        $colIndex = 1;
+        $sheet->setCellValue('A6', 'No');
+        $sheet->getStyle('A6')->applyFromArray($style_col);
+
+        $colIndex = 2;
         foreach ($questions as $q) {
             $col = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($colIndex);
             $sheet->setCellValue($col . '6', $q->label);
@@ -145,10 +149,15 @@ class Surveys extends CI_Controller
         // var_dump($question_ids);
         // die();
         $answers = $this->db
-            ->select('response_id, question_id, value')
-            ->where_in('question_id', $question_ids)
-            ->get('answers')
+            ->select('answers.response_id, answers.question_id, answers.value')
+            ->from('answers')
+            ->join('responses', 'responses.id = answers.response_id')
+            ->where_in('answers.question_id', $question_ids)
+            ->where('responses.status', 'completed')
+            ->get()
             ->result_array();
+        // var_dump($answers);
+        // die();
         // Group answers by respondent
         $grouped_answers = [];
         foreach ($answers as $answer) {
@@ -157,10 +166,13 @@ class Surveys extends CI_Controller
 
         // Get unique respondents
         $respondents = $this->db
-            ->select('response_id')
+            ->select('answers.response_id')
             ->distinct()
-            ->where_in('question_id', $question_ids)
-            ->get('answers')
+            ->from('answers')
+            ->join('responses', 'responses.id = answers.response_id')
+            ->where_in('answers.question_id', $question_ids)
+            ->where('responses.status', 'completed')
+            ->get()
             ->result_array();
 
         foreach ($respondents as $respondent) {
@@ -187,16 +199,26 @@ class Surveys extends CI_Controller
         $sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
         // Set judul file excel nya
         $sheet->setTitle("laporan_survey");
-        $filename = "laporan_" . $survey->title . '-' . date('dmYHis') . '.xlsx';
-        header("Pragma: public");
-        header("Expires: 0");
-        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-        header("Content-Type: application/force-download");
-        header("Content-Type: application/octet-stream");
-        header("Content-Type: application/download");;
-        header("Content-Disposition: attachment;filename=" . $filename);
+
+        // Set judul file excel
+        $filename = "laporan_" . $survey->title . '_' . date('dmY_His') . ".xlsx";
+
+        // Bersihkan output buffer (penting!)
+        ob_clean();
+        ob_start();
+
+        // Header download yang benar & tidak dobel
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
         header('Cache-Control: max-age=0');
+        header('Cache-Control: max-age=1');
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+        header('Cache-Control: cache, must-revalidate');
+        header('Pragma: public');
+
         $writer = new Xlsx($spreadsheet);
         $writer->save('php://output');
+        exit;
     }
 }

@@ -34,19 +34,128 @@ class Welcome extends CI_Controller
 		$this->load->view('landing/footer');
 	}
 
+	private function get_token()
+	{
+		// cek cookie dulu agar bisa bertahan berhari-hari
+		$cookie = get_cookie('survey_token');
+
+		if ($cookie) {
+			$this->session->set_userdata('survey_token', $cookie);
+			return $cookie;
+		}
+
+		// jika session belum ada → buat token baru
+		if (!$this->session->userdata('survey_token')) {
+			$token = bin2hex(random_bytes(16));
+
+			// simpan di session
+			$this->session->set_userdata('survey_token', $token);
+
+			// simpan di cookie 7 hari
+			set_cookie('survey_token', $token, 60 * 60 * 24 * 7);
+
+			return $token;
+		}
+
+		return $this->session->userdata('survey_token');
+	}
+
 	public function form($slug)
 	{
 		$survey = $this->Survey_model->get_by_slug($slug);
 		if (!$survey) show_404();
-		$data['questions'] = $this->Questions_model->get_by_survey($survey->id);
-		$data['survey'] = $survey;
-		$data['surveys'] = $this->Survey_model->get_all();
-		$data['title'] = $survey->title;
+
+		$token = $this->get_token();
+
+		$questions  = $this->Questions_model->get_by_survey($survey->id);
+		$response_id = $this->Survey_model->get_or_create_response($survey->id, $token);
+		$progress   = $this->Survey_model->get_progress($response_id);
+		$prev_survey = $this->Survey_model->get_prev_survey($survey->id);
+		$prev_slug = $prev_survey ? $prev_survey->slug : null;
+
+		$data = [
+			'title'     => $survey->title,
+			'survey'    => $survey,
+			'response_id'  => $response_id,
+			'prev_slug' => $prev_slug,
+			'surveys'   => $this->Survey_model->get_all(),
+			'questions' => $questions,
+			'progress'  => $progress,
+			'current'   => $this->Survey_model->get_survey_number($survey->id),
+			'total'     => $this->Survey_model->get_total_surveys()
+		];
 		$this->load->view('utama/header', $data);
 		$this->load->view('utama/nav_utama', $data);
 		$this->load->view('utama/utama', $data);
 		$this->load->view('utama/footer');
 	}
+
+	public function save_step()
+	{
+		$survey_id = $this->input->post('survey_id');
+		$response_id = $this->input->post('response_id');
+		$post = $this->input->post();
+
+
+		foreach ($post as $key => $val) {
+			if (strpos($key, 'q_') === 0) {
+				$qid = str_replace('q_', '', $key);
+
+				// Jika checkbox → array, ubah menjadi string
+				if (is_array($val)) {
+					$val = implode(',', $val);
+				}
+
+				// CEK apakah jawaban sudah ada untuk response_id + question_id
+				$exists = $this->db->where('response_id', $response_id)
+					->where('question_id', $qid)
+					->get('answers')
+					->row();
+
+				if ($exists) {
+					// UPDATE data lama
+					$this->db->where('response_id', $response_id)
+						->where('question_id', $qid)
+						->update('answers', [
+							'value' => $val
+						]);
+				} else {
+					// INSERT data baru
+					$this->db->insert('answers', [
+						'response_id' => $response_id,
+						'question_id' => $qid,
+						'value'       => $val
+					]);
+				}
+			}
+		}
+
+		// redirect ke halaman berikutnya
+		$next = $this->Survey_model->get_next_survey($survey_id);
+
+		if (!is_null($next)) {
+			redirect('welcome/form/' . $next->slug);
+		} else {
+			redirect('welcome/form/' . $this->Survey_model->get_last_slug());
+		}
+	}
+
+	public function finish()
+	{
+		$token = $this->get_token();
+
+		$this->db->where('token', $token);
+		$this->db->update('responses', ['status' => 'completed']);
+
+		$this->session->unset_userdata('survey_token'); // reset
+
+		$this->load->view('utama/header', ['title' => "Survey Completed"]);
+		$this->load->view('utama/nav_utama');
+		$this->load->view('utama/thanks');
+		$this->load->view('utama/footer');
+	}
+
+
 
 	public function submit()
 	{

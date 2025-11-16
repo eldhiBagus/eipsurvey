@@ -156,8 +156,7 @@ class M_user extends CI_Model
     {
         $this->db->select('*');
         $this->db->from('users');
-        // $this->db->where('id', $this->session->userdata('id'));
-        $this->db->where('id', 2);
+        $this->db->where('id', $this->session->userdata('id'));
         return $query = $this->db->get()->row_array();
     }
     public function getUserId($id)
