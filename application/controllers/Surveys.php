@@ -45,6 +45,7 @@ class Surveys extends CI_Controller
         $data = [
             'title' => $this->input->post('title'),
             'posisi' => $this->input->post('posisi'),
+            'menu' => $this->input->post('menu'),
             'slug' => url_title($this->input->post('title'), '-', TRUE)
         ];
 

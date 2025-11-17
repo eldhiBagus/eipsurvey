@@ -10,6 +10,9 @@ $(document).ready(function(){
                     data: 'posisi'
                 },
                 {
+                    data: 'menu'
+                },
+                {
                     data: 'title'
                 },
                 {
@@ -43,6 +46,7 @@ $(document).ready(function(){
         if(data){
             $('#id').val(data.id);
             $('#title').val(data.title);
+            $('#menu').val(data.menu);
             $('#posisi').val(data.posisi || 0);
             $('#modalSurvey').modal('show');
         } else {

@@ -18,7 +18,8 @@
                         <thead>
                             <tr class="text-center text-uppercase">
                                 <th scope="col" style="width: 10px;">urutan</th>
-                                <th scope="col" width="50%">Judul</th>
+                                <th scope="col" width="15%">Menu</th>
+                                <th scope="col" width="35%">Judul</th>
                                 <th scope="col" width="25%">Slug</th>
                                 <th scope="col" width="25%">Aksi</th>
                             </tr>
@@ -44,6 +45,10 @@
                         <div class="form-group">
                             <label>Judul Survei</label>
                             <input type="text" name="title" id="title" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Nama Menu</label>
+                            <input type="text" name="menu" id="menu" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label>Urutan ke -</label>

@@ -5,14 +5,14 @@
 
                 <!-- Judul & Progress -->
                 <h4 class="text-center"><?php echo $title; ?></h4>
-                <p class="mb-1">
+                <!-- <p class="mb-1">
                     Progress: <strong><?= $current ?>/<?= $total ?></strong>
                 </p>
 
                 <div class="progress mb-3">
                     <div class="progress-bar" role="progressbar" style="width: <?= ($current / $total) * 100 ?>%;">
                     </div>
-                </div>
+                </div> -->
 
                 <hr>
 
@@ -92,41 +92,35 @@
 
                     <!-- Tombol SIMPAN & LANJUT -->
                     <div class="row mb-5">
-                        <div class="col-6">
-                            <?php if ($current > 1): ?>
-                                <a href="<?= site_url('welcome/form/' . $prev_slug) ?>" class="btn btn-secondary">←
-                                    Sebelumnya</a>
-                            <?php endif; ?>
-                        </div>
-                        <div class="col-6 text-end">
+                        <div class="text-end">
                             <button type="submit" class="btn btn-primary">
-                                💾 Simpan Jawaban & Lanjut →
+                                💾 Simpan Jawaban
                             </button>
                         </div>
                     </div>
                 </form>
 
                 <!-- TOMBOL SELESAI hanya muncul di survei terakhir -->
-                <?php if ($current == $total): ?>
+                <!-- <?php if ($current == $total): ?>
 
-                    <div class="text-center mt-2 mb-5">
+                <div class="text-center mt-2 mb-5">
 
-                        <p class="text-muted mb-2">
-                            <i>Pastikan Anda telah memeriksa semua jawaban sebelum menyelesaikan survei.</i><br>
-                            <strong>Tekan tombol "Selesai" untuk mengirim jawaban Anda.</strong>
-                        </p>
+                    <p class="text-muted mb-2">
+                        <i>Pastikan Anda telah memeriksa semua jawaban sebelum menyelesaikan survei.</i><br>
+                        <strong>Tekan tombol "Selesai" untuk mengirim jawaban Anda.</strong>
+                    </p>
 
-                        <form method="post" action="<?= site_url('welcome/finish') ?>"
-                            onsubmit="return confirm('Yakin menyelesaikan survei ini? Anda tidak dapat mengubah jawaban lagi.');">
+                    <form method="post" action="<?= site_url('welcome/finish') ?>"
+                        onsubmit="return confirm('Yakin menyelesaikan survei ini? Anda tidak dapat mengubah jawaban lagi.');">
 
-                            <button class="btn btn-success btn-lg px-4 my-3">
-                                ✔ Selesai
-                            </button>
-                        </form>
+                        <button class="btn btn-success btn-lg px-4 my-3">
+                            ✔ Selesai
+                        </button>
+                    </form>
 
-                    </div>
+                </div>
 
-                <?php endif; ?>
+                <?php endif; ?> -->
 
 
             </div>

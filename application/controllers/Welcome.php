@@ -69,20 +69,16 @@ class Welcome extends CI_Controller
 
 		$questions  = $this->Questions_model->get_by_survey($survey->id);
 		$response_id = $this->Survey_model->get_or_create_response($survey->id, $token);
-		$progress   = $this->Survey_model->get_progress($response_id);
-		$prev_survey = $this->Survey_model->get_prev_survey($survey->id);
-		$prev_slug = $prev_survey ? $prev_survey->slug : null;
+		// $progress   = $this->Survey_model->get_progress($response_id);
+		// $prev_survey = $this->Survey_model->get_prev_survey($survey->id);
+		// $prev_slug = $prev_survey ? $prev_survey->slug : null;
 
 		$data = [
 			'title'     => $survey->title,
 			'survey'    => $survey,
 			'response_id'  => $response_id,
-			'prev_slug' => $prev_slug,
 			'surveys'   => $this->Survey_model->get_all(),
-			'questions' => $questions,
-			'progress'  => $progress,
-			'current'   => $this->Survey_model->get_survey_number($survey->id),
-			'total'     => $this->Survey_model->get_total_surveys()
+			'questions' => $questions
 		];
 		$this->load->view('utama/header', $data);
 		$this->load->view('utama/nav_utama', $data);
@@ -131,13 +127,14 @@ class Welcome extends CI_Controller
 		}
 
 		// redirect ke halaman berikutnya
-		$next = $this->Survey_model->get_next_survey($survey_id);
+		// $next = $this->Survey_model->get_next_survey($survey_id);
 
-		if (!is_null($next)) {
-			redirect('welcome/form/' . $next->slug);
-		} else {
-			redirect('welcome/form/' . $this->Survey_model->get_last_slug());
-		}
+		// if (!is_null($next)) {
+		// 	redirect('welcome/form/' . $next->slug);
+		// } else {
+		// 	redirect('welcome/form/' . $this->Survey_model->get_last_slug());
+		// }
+		redirect('welcome/finish');
 	}
 
 	public function finish()
@@ -148,9 +145,12 @@ class Welcome extends CI_Controller
 		$this->db->update('responses', ['status' => 'completed']);
 
 		$this->session->unset_userdata('survey_token'); // reset
-
-		$this->load->view('utama/header', ['title' => "Survey Completed"]);
-		$this->load->view('utama/nav_utama');
+		$data = [
+			'title' => "Survey Completed",
+			'surveys' => $this->Survey_model->get_all()
+		];
+		$this->load->view('utama/header', $data);
+		$this->load->view('utama/nav_utama', $data);
 		$this->load->view('utama/thanks');
 		$this->load->view('utama/footer');
 	}
