@@ -34,8 +34,9 @@
         <div class="row">
             <div class="4u">
                 <h2>Kawasan Industri Jababeka</h2>
-                <a href="#" class="image full"><img src="<?= base_url('assets/landing/'); ?>images/jababeka.jpeg" alt=""
-                        width="314" height="144"></a>
+                <a href="https://www.jababeka.com/id/home/" class="image full"><img
+                        src="<?= base_url('assets/landing/'); ?>images/jababeka.jpeg" alt="" width="314"
+                        height="144"></a>
                 <p>Kawasan Industri Jababeka merupakan kawasan eko-industri modern pertama di Indonesia yang
                     dikembangkan bersama-sama dengan ProLH GTZ di bawah program kerjasama teknis yang dibentuk
                     Kementerian Lingkungan Hidup Indonesia dan Republik Jerman. Sejak pendiriannya pada tahun 1989,
@@ -43,8 +44,9 @@
             </div>
             <div class="4u">
                 <h2 style="margin-bottom: 20px;">Karawang International Industrial City (KIIC)</h2>
-                <a href="#" class="image full"><img src="<?= base_url('assets/landing/'); ?>images/kiic_industrial.jpg"
-                        alt="" width="314" height="144"></a>
+                <a href="https://kiic.co.id/id/beranda/" class="image full"><img
+                        src="<?= base_url('assets/landing/'); ?>images/kiic_industrial.jpg" alt="" width="314"
+                        height="144"></a>
                 <p>KIIC adalah kawasan industri terpadu yang terletak di Karawang, Jawa Barat, merupakan hasil kerja
                     sama antara Sinar Mas Land dan ITOCHU Corporation Jepang. Kawasan Industri ini memiliki luas +/-
                     1.500 ha yang beroperasi sejak 1993. Misi kami adalah menyediakan lingkungan kerja yang nyaman bagi
@@ -53,8 +55,8 @@
             </div>
             <div class="4u">
                 <h2>Kawasan Industri MM2100</h2>
-                <a href="#" class="image full"><img src="<?= base_url('assets/landing/'); ?>images/mm2100.jpg" alt=""
-                        width="314" height="144"></a>
+                <a href="https://mm2100.co.id/" class="image full"><img
+                        src="<?= base_url('assets/landing/'); ?>images/mm2100.jpg" alt="" width="314" height="144"></a>
                 <p>MM2100 Industrial Town adalah Kawasan Industri terpadu yang pertama kali dikembangkan oleh PT.
                     Megalopolis Manunggal Industrial Development (PT. MMID), didirikan pada tahun 1990 oleh Marubeni
                     Corporation dari Jepang dan Bekasi Fajar Industrial Estate (saat ini Argo Manunggal Group of
