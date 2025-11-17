@@ -34,7 +34,7 @@
         <div class="row">
             <div class="4u">
                 <h2>Kawasan Industri Jababeka</h2>
-                <a href="https://www.jababeka.com/id/home/" class="image full"><img
+                <a href="https://www.jababeka.com/id/home/" class="image full" target="_blank"><img
                         src="<?= base_url('assets/landing/'); ?>images/jababeka.jpeg" alt="" width="314"
                         height="144"></a>
                 <p>Kawasan Industri Jababeka merupakan kawasan eko-industri modern pertama di Indonesia yang
@@ -44,7 +44,7 @@
             </div>
             <div class="4u">
                 <h2 style="margin-bottom: 20px;">Karawang International Industrial City (KIIC)</h2>
-                <a href="https://kiic.co.id/id/beranda/" class="image full"><img
+                <a href="https://kiic.co.id/id/beranda/" class="image full" target="_blank"><img
                         src="<?= base_url('assets/landing/'); ?>images/kiic_industrial.jpg" alt="" width="314"
                         height="144"></a>
                 <p>KIIC adalah kawasan industri terpadu yang terletak di Karawang, Jawa Barat, merupakan hasil kerja
@@ -55,7 +55,7 @@
             </div>
             <div class="4u">
                 <h2>Kawasan Industri MM2100</h2>
-                <a href="https://mm2100.co.id/" class="image full"><img
+                <a href="https://mm2100.co.id/" class="image full" target="_blank"><img
                         src="<?= base_url('assets/landing/'); ?>images/mm2100.jpg" alt="" width="314" height="144"></a>
                 <p>MM2100 Industrial Town adalah Kawasan Industri terpadu yang pertama kali dikembangkan oleh PT.
                     Megalopolis Manunggal Industrial Development (PT. MMID), didirikan pada tahun 1990 oleh Marubeni
